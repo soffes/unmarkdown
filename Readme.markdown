@@ -1,6 +1,6 @@
 # Unmarkdown
 
-Convert HTML to Markdown.
+Convert HTML to Markdown with Ruby.
 
 ## Installation
 
@@ -20,7 +20,37 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+``` ruby
+markdown = Unmarkdown.parse('Some <strong>HTML</strong>')
+#=> Some **HTML**
+
+markdown = Unmarkdown.parse('My website is http://soff.es', autolink: true')
+#=> My website is <a href="http://soff.es">http://soff.es</a>
+```
+
+## Support
+
+### Supported tags
+
+* h1-h6
+* blockquote
+* ul, ol, li
+* pre
+* hr
+* a
+* em, i
+* strong, b
+* u
+* mark
+* code
+* img
+
+For tags that aren't supported, their content will be added to the output. Basically it treats everything like a `<p>`.
+
+### Options
+
+* `fenced_code_blocks` — Uses three backticks before and after instead of four spaces before each line
+* `allow_scripts` — By default, script tags are removed. If you set this option to `true` their original HTML will be included in the output
 
 ## Contributing
 
