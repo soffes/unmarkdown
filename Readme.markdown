@@ -24,7 +24,7 @@ Or install it yourself as:
 markdown = Unmarkdown.parse('Some <strong>HTML</strong>')
 #=> Some **HTML**
 
-markdown = Unmarkdown.parse('My website is http://soff.es', autolink: true')
+markdown = Unmarkdown.parse('My website is http://soff.es', autolink: true)
 #=> My website is <a href="http://soff.es">http://soff.es</a>
 ```
 
