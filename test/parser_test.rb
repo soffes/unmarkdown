@@ -139,10 +139,10 @@ class ParserTest < Unmarkdown::Test
   end
 
   def test_autolink
-    html = 'Head to http://soff.es'
+    html = 'Head to http://soff.es and email sam@soff.es'
     assert_equal html, parse(html)
 
-    markdown = 'Head to <http://soff.es>'
+    markdown = 'Head to <http://soff.es> and email <sam@soff.es>'
     assert_equal markdown, parse(html, autolink: true)
   end
 end

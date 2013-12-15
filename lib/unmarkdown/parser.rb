@@ -3,7 +3,8 @@ require 'nokogiri'
 module Unmarkdown
   class Parser
     BLOCK_ELEMENT_NAMES = %w{h1 h2 h3 h4 h5 h6 blockquote pre hr ul ol li p div}.freeze
-    AUTOLINK_REGEX = /((?:https?|ftp):[^'"\s]+)/i.freeze
+    AUTOLINK_URL_REGEX = /((?:https?|ftp):[^'"\s]+)/i.freeze
+    AUTOLINK_EMAIL_REGEX = %r{([-.\w]+\@[-a-z0-9]+(?:\.[-a-z0-9]+)*\.[a-z]+)}i.freeze
 
     def initialize(html, options = {})
       @html = html
@@ -101,7 +102,8 @@ module Unmarkdown
           content = parse_content(node)
 
           # Optionally look for links
-          content.gsub!(AUTOLINK_REGEX, '<\1>') if @options[:autolink]
+          content.gsub!(AUTOLINK_URL_REGEX, '<\1>') if @options[:autolink]
+          content.gsub!(AUTOLINK_EMAIL_REGEX, '<\1>') if @options[:autolink]
 
           output << content
         when 'script'
