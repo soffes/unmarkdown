@@ -43,9 +43,17 @@ module Unmarkdown
       nodes.each do |node|
         case node.name
         when 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
-          hashes = ''
-          node.name.match(/\Ah(\d)\Z/)[1].to_i.times { hashes << '#' }
-          output << "#{hashes} #{parse_content(node)}\n\n"
+          level = node.name.match(/\Ah(\d)\Z/)[1].to_i
+          if @options[:underline_headers] && level < 3
+            content = parse_content(node)
+            output << content + "\n"
+            character = level == 1 ? '=' : '-'
+            content.length.times { output << character}
+          else
+            hashes = ''
+            level.times { hashes << '#' }
+            output << "#{hashes} #{parse_content(node)}"
+          end
         when 'blockquote'
           parse_content(node).split("\n").each do |line|
             output << "> #{line}\n"

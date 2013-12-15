@@ -14,6 +14,14 @@ class ParserTest < Unmarkdown::Test
 
       assert_equal markdown, parse(html)
     end
+
+    html = '<h1>Something Huge</h1>'
+    markdown = "Something Huge\n=============="
+    assert_equal markdown, parse(html, underline_headers: true)
+
+    html = '<h2>Something Smaller</h1>'
+    markdown = "Something Smaller\n-----------------"
+    assert_equal markdown, parse(html, underline_headers: true)
   end
 
   def test_blockquote
