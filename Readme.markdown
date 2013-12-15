@@ -2,6 +2,10 @@
 
 Convert HTML to Markdown with Ruby.
 
+There are several libraries that solve this, but Unmarkdown is simple. It's only [150 lines](lib/parser.rb) and handles everything I threw at it with no problem. The other libraries I tried either didn't do recursion correctly or were missing some Markdown extensions I needed. Both were hard to change, so I just whipped this up in a few hours.
+
+Enjoy!
+
 ## Installation
 
 Add this line to your application's Gemfile:
