@@ -34,6 +34,10 @@ class ParserTest < Unmarkdown::Test
     html = "<pre>puts 'Hello world'</pre>"
     markdown = "    puts 'Hello world'"
     assert_equal markdown, parse(html)
+
+    html = "<pre>puts 'Hello world'</pre>"
+    markdown = "```\nputs 'Hello world'\n```"
+    assert_equal markdown, parse(html, fenced_code_blocks: true)
   end
 
   def test_line_break
@@ -118,5 +122,15 @@ class ParserTest < Unmarkdown::Test
     html = '<img src="http://soffes-assets.s3.amazonaws.com/images/Sam-Soffes.jpg" title="That guy">'
     markdown = '![](http://soffes-assets.s3.amazonaws.com/images/Sam-Soffes.jpg "That guy")'
     assert_equal markdown, parse(html)
+  end
+
+  def test_script
+    html = %Q{<blockquote class="twitter-tweet"><p><a href="https://twitter.com/soffes">@soffes</a> If people think Apple is going to redo their promo videos and 3D animation intros for iOS 7 they&#39;re crazy. The design is ~final.</p>&mdash; Mike Rundle (@flyosity) <a href="https://twitter.com/flyosity/statuses/348358938296733696">June 22, 2013</a></blockquote>\n<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>}
+    markdown = %Q{> [@soffes](https://twitter.com/soffes) If people think Apple is going to redo their promo videos and 3D animation intros for iOS 7 they're crazy. The design is ~final.\n> \n> — Mike Rundle (@flyosity) [June 22, 2013](https://twitter.com/flyosity/statuses/348358938296733696)}
+    assert_equal markdown, parse(html)
+
+    html = %Q{<blockquote class="twitter-tweet"><p><a href="https://twitter.com/soffes">@soffes</a> If people think Apple is going to redo their promo videos and 3D animation intros for iOS 7 they&#39;re crazy. The design is ~final.</p>&mdash; Mike Rundle (@flyosity) <a href="https://twitter.com/flyosity/statuses/348358938296733696">June 22, 2013</a></blockquote>\n<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>}
+    markdown = %Q{> [@soffes](https://twitter.com/soffes) If people think Apple is going to redo their promo videos and 3D animation intros for iOS 7 they're crazy. The design is ~final.\n> \n> — Mike Rundle (@flyosity) [June 22, 2013](https://twitter.com/flyosity/statuses/348358938296733696)\n\n<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>}
+    assert_equal markdown, parse(html, allow_scripts: true)
   end
 end

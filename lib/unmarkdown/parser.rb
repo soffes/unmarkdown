@@ -2,6 +2,8 @@ require 'nokogiri'
 
 module Unmarkdown
   class Parser
+    BLOCK_ELEMENT_NAMES = %w{h1 h2 h3 h4 h5 h6 blockquote pre hr ul ol p div}.freeze
+
     def initialize(html, options = {})
       @html = html
       @options = options
@@ -46,8 +48,14 @@ module Unmarkdown
           end
         # when 'ul', 'ol'
         when 'pre'
-          parse_content(node).split("\n").each do |line|
-            output << "    #{line}\n"
+          content = parse_content(node)
+
+          if @options[:fenced_code_blocks]
+            output << "```\n#{content}\n```"
+          else
+            content.split("\n").each do |line|
+              output << "    #{line}\n"
+            end
           end
         when 'hr'
           output << "---\n\n"
@@ -65,11 +73,16 @@ module Unmarkdown
           output << "`#{parse_content(node)}`"
         when 'img'
           output << "![#{node['alt']}](#{node['src'] + build_title(node)})"
+        when 'script'
+          next unless @options[:allow_scripts]
+          output << node.to_html
         else
           # If it's an supported node or a node that just contains text, just get
           # its content
           output << parse_content(node)
         end
+
+        output << "\n\n" if BLOCK_ELEMENT_NAMES.include?(node.name)
       end
 
       output
