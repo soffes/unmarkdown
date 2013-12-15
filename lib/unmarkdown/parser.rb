@@ -19,7 +19,7 @@ module Unmarkdown
       # TODO: Optionally look for auto links
 
       # Strip whitespace
-      markdown.strip.gsub(/\n{2}+/, "\n\n")
+      markdown.rstrip.gsub(/\n{2}+/, "\n\n")
 
       # TODO: Strip trailing whitespace
     end
