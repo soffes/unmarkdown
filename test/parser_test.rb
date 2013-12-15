@@ -23,11 +23,15 @@ class ParserTest < Unmarkdown::Test
   end
 
   def test_unorder_list
-    # TODO
+    html = '<ul><li>Ruby<ul><li>Gem</li><li>Stuff</li></ul></li><li>Objective-C</li></ul>'
+    markdown = "* Ruby\n\n    * Gem\n\n    * Stuff\n\n* Objective-C"
+    assert_equal markdown, parse(html)
   end
 
   def test_ordered_list
-    # TODO
+    html = '<ol><li>Ruby<ol><li>Gem</li><li>Stuff</li></ol></li><li>Objective-C</li></ol>'
+    markdown = "1. Ruby\n\n    1. Gem\n\n    2. Stuff\n\n2. Objective-C"
+    assert_equal markdown, parse(html)
   end
 
   def test_code_block

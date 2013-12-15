@@ -2,7 +2,7 @@ require 'nokogiri'
 
 module Unmarkdown
   class Parser
-    BLOCK_ELEMENT_NAMES = %w{h1 h2 h3 h4 h5 h6 blockquote pre hr ul ol p div}.freeze
+    BLOCK_ELEMENT_NAMES = %w{h1 h2 h3 h4 h5 h6 blockquote pre hr ul ol li p div}.freeze
 
     def initialize(html, options = {})
       @html = html
@@ -13,6 +13,10 @@ module Unmarkdown
       # Setup document
       doc = Nokogiri::HTML(@html)
       doc.encoding = 'UTF-8'
+
+      # Reset bookkeeping
+      @list = []
+      @list_position = []
 
       # Parse the root node recursively
       root_node = doc.xpath('//body')
@@ -46,7 +50,28 @@ module Unmarkdown
           parse_content(node).split("\n").each do |line|
             output << "> #{line}\n"
           end
-        # when 'ul', 'ol'
+        when 'ul', 'ol'
+          output << "\n\n" if @list.count > 0
+
+          if unordered = node.name == 'ul'
+            @list << :unordered
+          else
+            @list << :ordered
+            @list_position << 0
+          end
+
+          output << parse_nodes(node.children)
+
+          @list.pop
+          @list_position.pop unless unordered
+        when 'li'
+          (@list.count - 1).times { output << '    ' }
+          if @list.last == :unordered
+            output << "* #{parse_content(node)}"
+          else
+            num = (@list_position[@list_position.count - 1] += 1)
+            output << "#{num}. #{parse_content(node)}"
+          end
         when 'pre'
           content = parse_content(node)
 
