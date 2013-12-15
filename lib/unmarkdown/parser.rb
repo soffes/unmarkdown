@@ -3,6 +3,7 @@ require 'nokogiri'
 module Unmarkdown
   class Parser
     BLOCK_ELEMENT_NAMES = %w{h1 h2 h3 h4 h5 h6 blockquote pre hr ul ol li p div}.freeze
+    AUTOLINK_REGEX = /((?:https?|ftp):[^'"\s]+)/i.freeze
 
     def initialize(html, options = {})
       @html = html
@@ -21,8 +22,6 @@ module Unmarkdown
       # Parse the root node recursively
       root_node = doc.xpath('//body')
       markdown = parse_nodes(root_node.children)
-
-      # TODO: Optionally look for auto links
 
       # Strip whitespace
       markdown.rstrip.gsub(/\n{2}+/, "\n\n")
@@ -98,6 +97,13 @@ module Unmarkdown
           output << "`#{parse_content(node)}`"
         when 'img'
           output << "![#{node['alt']}](#{node['src'] + build_title(node)})"
+        when 'text'
+          content = parse_content(node)
+
+          # Optionally look for links
+          content.gsub!(AUTOLINK_REGEX, '<\1>') if @options[:autolink]
+
+          output << content
         when 'script'
           next unless @options[:allow_scripts]
           output << node.to_html

@@ -137,4 +137,12 @@ class ParserTest < Unmarkdown::Test
     markdown = %Q{> [@soffes](https://twitter.com/soffes) If people think Apple is going to redo their promo videos and 3D animation intros for iOS 7 they're crazy. The design is ~final.\n> \n> — Mike Rundle (@flyosity) [June 22, 2013](https://twitter.com/flyosity/statuses/348358938296733696)\n\n<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>}
     assert_equal markdown, parse(html, allow_scripts: true)
   end
+
+  def test_autolink
+    html = 'Head to http://soff.es'
+    assert_equal html, parse(html)
+
+    markdown = 'Head to <http://soff.es>'
+    assert_equal markdown, parse(html, autolink: true)
+  end
 end
