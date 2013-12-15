@@ -49,6 +49,8 @@ For tags that aren't supported, their content will be added to the output. Basic
 
 ### Options
 
+All of the options default to `false`. If you'd like to turn additional things on, pass a hash with symbols as the second argument to `Unmarkdown.parse` (see example above).
+
 * `fenced_code_blocks` — Uses three backticks before and after instead of four spaces before each line
 * `allow_scripts` — By default, script tags are removed. If you set this option to `true` their original HTML will be included in the output
 * `underline_headers` — By default number signs are added before headers. If you turn this option on, it will use equal signs for h1's or hypens for h2's and the reset will remain number signs.
