@@ -93,7 +93,7 @@ module Unmarkdown
         when 'hr'
           output << "---\n\n"
         when 'a'
-          output << "[#{parse_content(node)}](#{node['href'] + build_title(node)})"
+          output << "[#{parse_content(node)}](#{node['href']}#{build_title(node)})"
         when 'i', 'em'
           output << "*#{parse_content(node)}*"
         when 'b', 'strong'
@@ -105,7 +105,7 @@ module Unmarkdown
         when 'code'
           output << "`#{parse_content(node)}`"
         when 'img'
-          output << "![#{node['alt']}](#{node['src'] + build_title(node)})"
+          output << "![#{node['alt']}](#{node['src']}#{build_title(node)})"
         when 'text'
           content = parse_content(node)
 
