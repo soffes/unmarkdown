@@ -131,7 +131,7 @@ module Unmarkdown
 
     # Get the content from a node
     def parse_content(node)
-      content = if node.children.empty?
+      if node.children.empty?
         node.content
       else
         parse_nodes(node.children)
