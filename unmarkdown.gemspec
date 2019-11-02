@@ -19,8 +19,8 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 1.9.2'
 
-  spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'bundler', '~> 2.0'
 
   # HTML parsing
-  spec.add_dependency 'nokogiri'
+  spec.add_dependency 'nokogiri', '~> 1.0'
 end
