@@ -117,10 +117,11 @@ module Unmarkdown
         when 'script'
           next unless @options[:allow_scripts]
           output << node.to_html
-        else
-          # If it's an supported node or a node that just contains text, just get
-          # its content
+        when 'p'
           output << parse_content(node)
+        else
+          # If it's an supported node or a node that just contains text, just append it
+          output << node.to_html
         end
 
         output << "\n\n" if BLOCK_ELEMENT_NAMES.include?(node.name)

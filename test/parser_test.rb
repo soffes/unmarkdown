@@ -153,4 +153,9 @@ class ParserTest < Unmarkdown::Test
     markdown = 'Head to <http://soff.es> and email <sam@soff.es>'
     assert_equal markdown, parse(html, autolink: true)
   end
+
+  def test_unknown
+    html = %Q{Some custom tag: <expand-note>hello</expand-note>. <span class="spoiler">a secret</span>}
+    assert_equal html, parse(html)
+  end
 end
