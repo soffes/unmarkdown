@@ -158,4 +158,21 @@ class ParserTest < Unmarkdown::Test
     html = %Q{Some custom tag: <expand-note>hello</expand-note>. <span class="spoiler">a secret</span>}
     assert_equal html, parse(html)
   end
+
+  def test_comments
+    html = %Q{<!--One-line comment by itself-->
+
+Line with an <!--inline comment--> inside
+
+<!--
+Block comment
+-->
+
+surrounding stuff
+<!--
+Block comment
+-->
+surrounding stuff}
+    assert_equal html, parse(html)
+  end
 end

@@ -12,8 +12,15 @@ module Unmarkdown
     end
 
     def parse
+      # If the HTML fragment starts with a comment, it is ignored. Add an
+      # enclosing body tag to ensure everything is included.
+      html = @html
+      unless html.include?('<body')
+        html = "<body>#{@html}</body>"
+      end
+
       # Setup document
-      doc = Nokogiri::HTML(@html)
+      doc = Nokogiri::HTML(html)
       doc.encoding = 'UTF-8'
 
       # Reset bookkeeping
